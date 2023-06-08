@@ -1,0 +1,25 @@
+[package]
+authors = ["you"]
+description = "A Tauri App"
+edition = "2021"
+license = ""
+name = "task-client"
+repository = ""
+version = "0.0.0"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[build-dependencies]
+tauri-build = {version = "1.3", features = [] }
+
+[dependencies]
+rusqlite = "0.29.0"
+serde = {version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+tauri = {version = "1.3", features = ["shell-open"] }
+tokio = {version = "1.28.2", features = ["full"] }
+
+[features]
+# this feature is used for production builds or when `devPath` points to the filesystem
+# DO NOT REMOVE!!
+custom-protocol = ["tauri/custom-protocol"]
