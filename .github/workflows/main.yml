@@ -17,7 +17,7 @@ jobs:
 
     steps:
       - name: Show The Key
-        run: echo "\nprivateKey -> $TAURI_PRIVATE_KEY \npassword -> $TAURI_PASSWORD"
+        run: echo "\nprivateKey -> $vars.TAURI_PRIVATE_KEY \npassword -> $vars.TAURI_PASSWORD"
 
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -52,6 +52,8 @@ jobs:
 
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAURI_PRIVATE_KEY: ${{ vars.TAURI_PRIVATE_KEY }}
+          TAURI_PASSWORD: ${{ vars.TAURI_PASSWORD }}
         with:
           tagName: ${{ github.ref_name }} # This only works if your workflow triggers on new tags.
           releaseName: "App Name v__VERSION__" # tauri-action replaces \_\_VERSION\_\_ with the app version.
