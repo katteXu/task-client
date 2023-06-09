@@ -58,3 +58,5 @@ jobs:
           releaseBody: "See the assets to download and install this version."
           releaseDraft: true
           prerelease: false
+          TAURI_PRIVATE_KEY: ${{vars.TAURI_PRIVATE_KEY}}
+          TAURI_PASSWORD: ${{ vars.TAURI_PASSWORD }}
