@@ -1,50 +1,40 @@
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
+use task_client::model::{Todo, TodoApp};
+use tauri::{async_runtime::Mutex, Result, State};
+
+struct AppState {
+    app: Mutex<TodoApp>,
+}
 // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
+
 #[tauri::command]
-fn greet(name: &str) -> String {
-    format!("Hello, {}! You've been greeted from Rust!", name)
+async fn get_todos(state: State<'_, AppState>) -> Result<Vec<Todo>> {
+    let conn = state.app.lock().await;
+    let data = conn.get_todos().expect("获取数据错误");
+    Ok(data)
 }
 
 #[tauri::command]
-async fn get_data() -> String {
-    // let path = "./my_db.db3";
-    // let conn = Connection::open(path).unwrap();
-
-    // let mut stmt = conn.prepare("SELECT * FROM person").unwrap();
-    // let person_iter = stmt
-    //     .query_map([], |row| {
-    //         Ok(Person {
-    //             id: row.get(0)?,
-    //             name: row.get(1)?,
-    //             data: row.get(2)?,
-    //         })
-    //     })
-    //     .unwrap();
-    // let mut result = String::from("");
-    // for person in person_iter {
-    //     result = format!("Found person {:?}", person.unwrap());
-    // }
-    let result = String::from("test");
-    result
-}
-
-// use rusqlite::{params, Connection, Result};
-
-#[derive(Debug)]
-struct Person {
-    id: i32,
-    name: String,
-    data: Option<Vec<u8>>,
+async fn add_todo(todo: Todo, state: State<'_, AppState>) -> Result<bool> {
+    let conn = state.app.lock().await;
+    let result = conn.new_todo(todo);
+    Ok(result)
 }
 
 #[tokio::main]
 async fn main() {
+    let app_dir = tauri::api::path::app_data_dir(&tauri::Config::default()).unwrap();
+
+    // 包名要一致
+    let app = TodoApp::new(app_dir.join("com.task-client.dev")).unwrap();
+
     tauri::Builder::default()
-        .invoke_handler(tauri::generate_handler![greet, get_data])
+        .invoke_handler(tauri::generate_handler![get_todos, add_todo])
+        .manage(AppState {
+            app: Mutex::from(app),
+        })
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
-
-    // Ok(())
 }
