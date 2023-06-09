@@ -17,7 +17,7 @@ jobs:
 
     steps:
       - name: Show The Key
-        uses: echo "\nprivateKey -> $TAURI_PRIVATE_KEY \npassword -> $TAURI_PASSWORD"
+        run: echo "\nprivateKey -> $TAURI_PRIVATE_KEY \npassword -> $TAURI_PASSWORD"
 
       - name: Checkout repository
         uses: actions/checkout@v3
