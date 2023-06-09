@@ -49,14 +49,13 @@ jobs:
 
       - name: Build the app
         uses: tauri-apps/tauri-action@v0
-
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAURI_PRIVATE_KEY: ${{ vars.TAURI_PRIVATE_KEY }}
+          TAURI_PASSWORD: ${{ vars.TAURI_PASSWORD }}
         with:
           tagName: ${{ github.ref_name }} # This only works if your workflow triggers on new tags.
           releaseName: "App Name v__VERSION__" # tauri-action replaces \_\_VERSION\_\_ with the app version.
           releaseBody: "See the assets to download and install this version."
           releaseDraft: true
           prerelease: false
-          TAURI_PRIVATE_KEY: ${{vars.TAURI_PRIVATE_KEY}}
-          TAURI_PASSWORD: ${{ vars.TAURI_PASSWORD }}
