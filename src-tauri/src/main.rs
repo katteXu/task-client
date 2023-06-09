@@ -27,9 +27,11 @@ async fn add_todo(todo: Todo, state: State<'_, AppState>) -> Result<bool> {
 async fn main() {
     let app_dir = tauri::api::path::app_data_dir(&tauri::Config::default()).unwrap();
 
-    // 包名要一致
+    // 包名要一致  
+    // windows路径 UserName\AppData\Roaming\com.task-client.dev
+    // TODO: 封装
     let app = TodoApp::new(app_dir.join("com.task-client.dev")).unwrap();
-
+    
     tauri::Builder::default()
         .invoke_handler(tauri::generate_handler![get_todos, add_todo])
         .manage(AppState {

@@ -16,6 +16,9 @@ jobs:
     runs-on: ${{ matrix.platform }}
 
     steps:
+      - name: Show The Key
+        run: echo "\nprivateKey -> $TAURI_PRIVATE_KEY \npassword -> $TAURI_PASSWORD"
+
       - name: Checkout repository
         uses: actions/checkout@v3
 
