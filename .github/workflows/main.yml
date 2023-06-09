@@ -17,7 +17,10 @@ jobs:
 
     steps:
       - name: Show The Key
-        run: echo "\nprivateKey -> ${{ vars.TAURI_PRIVATE_KEY }} \npassword -> ${{ vars.TAURI_PASSWORD }}"
+        env:
+          TAURI_PRIVATE_KEY: ${{ vars.TAURI_PRIVATE_KEY }}
+          TAURI_PASSWORD: ${{ vars.TAURI_PASSWORD }}
+        run: echo "\nprivateKey -> $TAURI_PRIVATE_KEY \npassword -> $TAURI_PASSWORD"
 
       - name: Checkout repository
         uses: actions/checkout@v3
